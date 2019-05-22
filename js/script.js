@@ -2,15 +2,16 @@ var aktuellesPorto;
 var briefmarken = [0.01, 0.02, 0.05, 0.10, 0.20, 0.45, 0.70, 1, 1.45]
 var moeglichkeiten = [];
 var neuesPorto = [];
+var anzahlBriefmarken;
 
 function output(){
 	var output = '';
 	for(var i = 0; moeglichkeiten.length > i; i++){
 		var adden = '';
 		moeglichkeiten[i].forEach(function(item2, index, array) {
-			adden += '1x ' + item2 + ' ';
+			adden += '<div class="col-sm briefmarke">' + item2 + ' € </div>';
 		});
-		output += '<p>' + adden + '</p>';
+		output += '<div class="container"><div class="row">' + adden + '</div></div>';
 	};
 	document.getElementById('displayAktuelleAuswahl').innerHTML=output;
 }
@@ -59,21 +60,68 @@ function algorithmus(){
 	//console.log(neuesPorto);
 }
 
+function moeglichkeitenUeberpruefen(){
+	var ueberpruefteMoeglichkeiten = [];
+	console.log('Möglichkeiten werden überprüft ...');
+	console.log(moeglichkeiten);
+	ueberpruefteMoeglichkeiten.push(moeglichkeiten[0]);
+	for(var i = 0; i < moeglichkeiten.length-1; i++){//geht jede mögliche kombination durch
+		var identisch = false;
+		for (var k = i; k > (-1); k--){
+			//console.log("i = " + i + "; k = " + k)
+			var uebereinstimmend = 0;
+			for(var j = 0; j < moeglichkeiten[i+1].length; j++){//geht jede Briefmarke der Kombination durch
+				var found = moeglichkeiten[k].find(function(element){
+					return element == moeglichkeiten[i+1][j];
+				});
+				//console.log(found);
+				if(found !== undefined){
+					uebereinstimmend++;
+				}
+			}
+			if(uebereinstimmend==moeglichkeiten[i+1].length){
+				//console.log('Array ist identisch');
+				identisch = true
+			}	
+		}
+		if (identisch==true){}
+		else{
+			//console.log('Array ist nicht identisch');
+			ueberpruefteMoeglichkeiten.push(moeglichkeiten[i+1])
+		}
+	}	
+	console.log('Überprüfung abgeschlossen ...');
+	console.log(ueberpruefteMoeglichkeiten);
+	return(ueberpruefteMoeglichkeiten);
+}
+
+function aufbereiten(){
+	for (var i = 0; i < moeglichkeiten.length; i++){
+		moeglichkeiten[i].sort(numSort);
+	}
+}
+
 function main(){
 	moeglichkeiten = [];
 	console.log('aktuelles Porto beträgt: ' + aktuellesPorto);
 	console.log('aktuell zur Verfügung stehende Briefmarken: ' + briefmarken);
+	console.log('Stückelung in ' + anzahlBriefmarken + " Briefmarken")
 	glattTeilbar();
-	algorithmus();
-	algorithmus();
-	algorithmus();
+	for(var m = 0; m < anzahlBriefmarken - 1; m++){
+		algorithmus();
+	}
+	moeglichkeiten=moeglichkeitenUeberpruefen();
 	//console.log(moeglichkeiten);
+	aufbereiten();
 	output();
 	clear();
 }
 
+function numSort(a, b) {
+	return (b - a);
+}
+
 function clear(){
-	aktuellesPorto = null;
 	aktuelleBriefmarke = null;
 	neuneuesPorto = null;
 }

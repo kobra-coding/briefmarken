@@ -3,13 +3,20 @@
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title>Javascript</title>
+		<title>Briefmarkenrechner</title>
 		<script src="js/jquery-latest.js"></script>
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 		<script src="js/script.js"></script>
 		<style>
 			.output{
 				margin-bottom: 25px;
+			}
+			.briefmarke{
+				color: white;
+				background-color: black;
+				margin: 10px 10px 10px 10px;
+				text-align: center;
+				padding: 10px; 10px; 10px; 10px;
 			}
 		</style>
 	</head>
@@ -58,10 +65,18 @@
 					<option value="0.45">Postkarte: 0,45 €</option>
 				</select>
 			</div>
+			<div class="form-group">
+				<label for="exampleFormControlSelect1">Maximale Anzahl an Briefmarken:</label>
+				<div class="input-group mb-3">
+					<input class="form-control" id="anzahlInputUser" type="number" min="1" value="4"></input>
+					<div class="input-group-append">
+						<button class="btn btn-outline-secondary" type="button" id="anzahlInputUserSend" onclick="">Go!</button>
+					</div>
+				</div>
+			</div>
 		</div>
 		<div class="container" id="displayAktuelleAuswahl" style="margin-top:100px"></div>
 		<script>
-			
 			$( "#portoInputUser" ).change(function() {
 				aktuellesPorto = parseFloat(document.getElementById('portoInputUser').value);
 				main();
@@ -70,7 +85,12 @@
 				aktuellesPorto = parseFloat(document.getElementById('portoInputUserSelect').value);
 				main();
 			})
+			$( "#anzahlInputUser" ).change(function() {
+				anzahlBriefmarken = parseFloat(document.getElementById('anzahlInputUser').value);
+				main();
+			})
 			aktuellesPorto = parseFloat(document.getElementById('portoInputUserSelect').value);
+			anzahlBriefmarken = parseFloat(document.getElementById('anzahlInputUser').value);
 			main();
 		</script>
 	</body>
