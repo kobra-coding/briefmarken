@@ -3,12 +3,19 @@
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title>Javascript</title>
+		<title>Briefmarkenrechner</title>
 		<script src="https://code.jquery.com/jquery-latest.js"></script>
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 		<style>
 			.output{
 				margin-bottom: 25px;
+			}
+			.briefmarke{
+				color: white;
+				background-color: black;
+				margin: 10px 10px 10px 10px;
+				text-align: center;
+				padding: 10px; 10px; 10px; 10px;
 			}
 		</style>
 	</head>
@@ -57,22 +64,32 @@
 					<option value="0.45">Postkarte: 0,45 €</option>
 				</select>
 			</div>
+			<div class="form-group">
+				<label for="exampleFormControlSelect1">Maximale Anzahl an Briefmarken:</label>
+				<div class="input-group mb-3">
+					<input class="form-control" id="anzahlInputUser" type="number" min="1" value="4"></input>
+					<div class="input-group-append">
+						<button class="btn btn-outline-secondary" type="button" id="anzahlInputUserSend" onclick="">Go!</button>
+					</div>
+				</div>
+			</div>
 		</div>
 		<div class="container" id="displayAktuelleAuswahl" style="margin-top:100px"></div>
-		<script>			
+		<script>		
 			var aktuellesPorto;
 			var briefmarken = [0.01, 0.02, 0.05, 0.10, 0.20, 0.45, 0.70, 1, 1.45]
 			var moeglichkeiten = [];
 			var neuesPorto = [];
+			var anzahlBriefmarken;
 
 			function output(){
 				var output = '';
 				for(var i = 0; moeglichkeiten.length > i; i++){
 					var adden = '';
 					moeglichkeiten[i].forEach(function(item2, index, array) {
-						adden += '1x ' + item2 + ' ';
+						adden += '<div class="col-sm briefmarke">' + item2 + ' € </div>';
 					});
-					output += '<p>' + adden + '</p>';
+					output += '<div class="container"><div class="row">' + adden + '</div></div>';
 				};
 				document.getElementById('displayAktuelleAuswahl').innerHTML=output;
 			}
@@ -121,30 +138,70 @@
 				//console.log(neuesPorto);
 			}
 
+			function moeglichkeitenUeberpruefen(){
+				var ueberpruefteMoeglichkeiten = [];
+				console.log('Möglichkeiten werden überprüft ...');
+				console.log(moeglichkeiten);
+				ueberpruefteMoeglichkeiten.push(moeglichkeiten[0]);
+				for(var i = 0; i < moeglichkeiten.length-1; i++){//geht jede mögliche kombination durch
+					var identisch = false;
+					for (var k = i; k > (-1); k--){
+						//console.log("i = " + i + "; k = " + k)
+						var uebereinstimmend = 0;
+						for(var j = 0; j < moeglichkeiten[i+1].length; j++){//geht jede Briefmarke der Kombination durch
+							var found = moeglichkeiten[k].find(function(element){
+								return element == moeglichkeiten[i+1][j];
+							});
+							//console.log(found);
+							if(found !== undefined){
+								uebereinstimmend++;
+							}
+						}
+						if(uebereinstimmend==moeglichkeiten[i+1].length){
+							//console.log('Array ist identisch');
+							identisch = true
+						}	
+					}
+					if (identisch==true){}
+					else{
+						//console.log('Array ist nicht identisch');
+						ueberpruefteMoeglichkeiten.push(moeglichkeiten[i+1])
+					}
+				}	
+				console.log('Überprüfung abgeschlossen ...');
+				console.log(ueberpruefteMoeglichkeiten);
+				return(ueberpruefteMoeglichkeiten);
+			}
+
+			function aufbereiten(){
+				for (var i = 0; i < moeglichkeiten.length; i++){
+					moeglichkeiten[i].sort(numSort);
+				}
+			}
+
 			function main(){
 				moeglichkeiten = [];
 				console.log('aktuelles Porto beträgt: ' + aktuellesPorto);
 				console.log('aktuell zur Verfügung stehende Briefmarken: ' + briefmarken);
+				console.log('Stückelung in ' + anzahlBriefmarken + " Briefmarken")
 				glattTeilbar();
-				algorithmus();
-				algorithmus();
-				algorithmus();
+				for(var m = 0; m < anzahlBriefmarken - 1; m++){
+					algorithmus();
+				}
+				moeglichkeiten=moeglichkeitenUeberpruefen();
 				//console.log(moeglichkeiten);
+				aufbereiten();
 				output();
 				clear();
 			}
 
-			function clear(){
-				aktuellesPorto = null;
-				aktuelleBriefmarke = null;
-				neuneuesPorto = null;
+			function numSort(a, b) {
+				return (b - a);
 			}
 
-			function fakultaet(n){
-				if ( n<=1 ) {
-					return n;
-				}
-				return n * fakultaet( n - 1 );
+			function clear(){
+				aktuelleBriefmarke = null;
+				neuneuesPorto = null;
 			}
 			
 			$( "#portoInputUser" ).change(function() {
@@ -155,7 +212,12 @@
 				aktuellesPorto = parseFloat(document.getElementById('portoInputUserSelect').value);
 				main();
 			})
+			$( "#anzahlInputUser" ).change(function() {
+				anzahlBriefmarken = parseFloat(document.getElementById('anzahlInputUser').value);
+				main();
+			})
 			aktuellesPorto = parseFloat(document.getElementById('portoInputUserSelect').value);
+			anzahlBriefmarken = parseFloat(document.getElementById('anzahlInputUser').value);
 			main();
 		</script>
 	</body>
