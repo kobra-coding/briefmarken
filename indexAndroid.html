@@ -6,7 +6,7 @@
 		<title>Briefmarkenrechner</title>
 		<script src="https://code.jquery.com/jquery-latest.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 		<style>
 			.output{
@@ -75,7 +75,7 @@
 			<div class="form-group">
 				<label for="exampleFormControlSelect1">Maximale Anzahl an Briefmarken:</label>
 				<div class="input-group mb-3">
-					<input class="form-control" id="anzahlInputUser" type="number" min="1" value="4"></input>
+					<input class="form-control" id="anzahlInputUser" type="number" min="1" max="6" value="4"></input>
 					<div class="input-group-append">
 						<button class="btn btn-outline-secondary" type="button" id="anzahlInputUserSend" onclick="">Go!</button>
 					</div>
@@ -83,7 +83,7 @@
 			</div>
 		</div>
 		<div class="container" id="displayAktuelleAuswahl" style="margin-top:100px"></div>
-		<script>		
+		<script>
 			var aktuellesPorto;
 			var briefmarken = [0.01, 0.02, 0.05, 0.10, 0.20, 0.45, 0.70, 1, 1.45]
 			var moeglichkeiten = [];
@@ -115,7 +115,7 @@
 					}
 				}
 				//console.log(neuesPorto);
-				
+
 			}
 
 			function algorithmus(){
@@ -168,14 +168,14 @@
 						if(uebereinstimmend==moeglichkeiten[i+1].length){
 							//console.log('Array ist identisch');
 							identisch = true
-						}	
+						}
 					}
 					if (identisch==true){}
 					else{
 						//console.log('Array ist nicht identisch');
 						ueberpruefteMoeglichkeiten.push(moeglichkeiten[i+1])
 					}
-				}	
+				}
 				console.log('Überprüfung abgeschlossen ...');
 				console.log(ueberpruefteMoeglichkeiten);
 				return(ueberpruefteMoeglichkeiten);
@@ -211,7 +211,7 @@
 				aktuelleBriefmarke = null;
 				neuneuesPorto = null;
 			}
-			
+
 			$( "#portoInputUser" ).change(function() {
 				aktuellesPorto = parseFloat(document.getElementById('portoInputUser').value);
 				main();

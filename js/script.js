@@ -11,7 +11,7 @@ function output(){
 		moeglichkeiten[i].forEach(function(item2, index, array) {
 			adden += '<div class="col-sm briefmarke">' + item2 + ' € </div>';
 		});
-		output += '<div class="container"><div class="row">' + adden + '</div></div>';
+		output += '<div class="container"><div class="row nice">' + adden + '</div></div>';
 	};
 	document.getElementById('displayAktuelleAuswahl').innerHTML=output;
 }
@@ -29,7 +29,7 @@ function glattTeilbar(){
 		}
 	}
 	//console.log(neuesPorto);
-	
+
 }
 
 function algorithmus(){
@@ -82,14 +82,14 @@ function moeglichkeitenUeberpruefen(){
 			if(uebereinstimmend==moeglichkeiten[i+1].length){
 				//console.log('Array ist identisch');
 				identisch = true
-			}	
+			}
 		}
 		if (identisch==true){}
 		else{
 			//console.log('Array ist nicht identisch');
 			ueberpruefteMoeglichkeiten.push(moeglichkeiten[i+1])
 		}
-	}	
+	}
 	console.log('Überprüfung abgeschlossen ...');
 	console.log(ueberpruefteMoeglichkeiten);
 	return(ueberpruefteMoeglichkeiten);
